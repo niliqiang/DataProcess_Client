@@ -170,12 +170,12 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <Capability>1</Capability>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER</IncludePath>
+              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -432,6 +432,11 @@
               <FileName>led.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\HARDWARE\LED\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HARDWARE\USART2\usart2.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -592,6 +597,31 @@
               <FileName>system_stm32f10x.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\USER\system_stm32f10x.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>ESP8266</GroupName>
+          <Files>
+            <File>
+              <FileName>common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ESP8266\common.c</FilePath>
+            </File>
+            <File>
+              <FileName>wifista.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ESP8266\wifista.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>MALLOC</GroupName>
+          <Files>
+            <File>
+              <FileName>malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MALLOC\malloc.c</FilePath>
             </File>
           </Files>
         </Group>
