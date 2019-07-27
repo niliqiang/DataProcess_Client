@@ -35,9 +35,8 @@ void USART2_IRQHandler(void)
 {
 	u8 res;	    
 	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)//接收到数据
-	{	 
- 
-	res =USART_ReceiveData(USART2);		
+	{	  
+		res =USART_ReceiveData(USART2);		
 		if(USART2_RX_STA<USART2_MAX_RECV_LEN)		//还可以接收数据
 		{
 			TIM_SetCounter(TIM4,0);//计数器清空        				 
@@ -62,29 +61,29 @@ void USART2_Init(u32 bound)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);	// GPIOA时钟
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
 
- 	USART_DeInit(USART2);  //复位串口2
+	USART_DeInit(USART2);  //复位串口2
 		 //USART2_TX   PA.2
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2; //PA.2
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	//复用推挽输出
-  GPIO_Init(GPIOA, &GPIO_InitStructure); //初始化PA2
-   
-    //USART2_RX	  PA.3
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;//浮空输入
-  GPIO_Init(GPIOA, &GPIO_InitStructure);  //初始化PA3
-	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2; //PA.2
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;	//复用推挽输出
+	GPIO_Init(GPIOA, &GPIO_InitStructure); //初始化PA2
+
+	//USART2_RX	  PA.3
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;//浮空输入
+	GPIO_Init(GPIOA, &GPIO_InitStructure);  //初始化PA3
+
 	USART_InitStructure.USART_BaudRate = bound;//一般设置为9600;
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
 	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
-  
+
 	USART_Init(USART2, &USART_InitStructure); //初始化串口	2
-  
+
 	//波特率设置
- //	USART2->BRR=(pclk1*1000000)/(bound);// 波特率设置	 
+	//USART2->BRR=(pclk1*1000000)/(bound);// 波特率设置	 
 	//USART2->CR1|=0X200C;  	//1位停止,无校验位.
 	USART_DMACmd(USART2,USART_DMAReq_Tx,ENABLE);  	//使能串口2的DMA发送
 	UART_DMA_Config(DMA1_Channel7,(u32)&USART2->DR,(u32)USART2_TX_BUF);//DMA1通道7,外设为串口2,存储器为USART2_TX_BUF 
@@ -92,10 +91,10 @@ void USART2_Init(u32 bound)
 	
 #ifdef USART2_RX_EN		  	//如果使能了接收
 	//使能接收中断
-  USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);//开启中断   
+	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);//开启中断   
 	
 	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=2 ;//抢占优先级3
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3;//抢占优先级3
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;		//子优先级3
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器

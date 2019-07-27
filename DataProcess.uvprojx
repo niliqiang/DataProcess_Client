@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC</IncludePath>
+              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC;.\HARDWARE\USART3</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -417,26 +417,6 @@
               <FileName>startup_stm32f10x_hd.s</FileName>
               <FileType>2</FileType>
               <FilePath>.\CORE\startup_stm32f10x_hd.s</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>HARDWARE</GroupName>
-          <Files>
-            <File>
-              <FileName>key.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HARDWARE\KEY\key.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HARDWARE\LED\led.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\HARDWARE\USART2\usart2.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -581,22 +561,37 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>USER</GroupName>
+          <GroupName>MALLOC</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>malloc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\main.c</FilePath>
+              <FilePath>.\MALLOC\malloc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>HARDWARE</GroupName>
+          <Files>
+            <File>
+              <FileName>key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HARDWARE\KEY\key.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f10x_it.c</FileName>
+              <FileName>led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\stm32f10x_it.c</FilePath>
+              <FilePath>.\HARDWARE\LED\led.c</FilePath>
             </File>
             <File>
-              <FileName>system_stm32f10x.c</FileName>
+              <FileName>usart2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\system_stm32f10x.c</FilePath>
+              <FilePath>.\HARDWARE\USART2\usart2.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HARDWARE\USART3\usart3.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -616,12 +611,22 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>MALLOC</GroupName>
+          <GroupName>USER</GroupName>
           <Files>
             <File>
-              <FileName>malloc.c</FileName>
+              <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\MALLOC\malloc.c</FilePath>
+              <FilePath>.\USER\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_it.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\stm32f10x_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>system_stm32f10x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\system_stm32f10x.c</FilePath>
             </File>
           </Files>
         </Group>
