@@ -92,7 +92,7 @@ u8 wh_lte_7s4_enter_config(void)
 	delay_ms(15);					//大于串口组帧时间(10ms)
 	while((USART3->SR&0X40)==0);	//等待发送空
 	USART3->DR='+';
-	delay_ms(15);					//大于串口组帧时间(10ms)
+	delay_ms(50);					//大于串口组帧时间(10ms)
 	while((USART3->SR&0X40)==0);	//等待发送空
 	USART3->DR='a';
 	delay_ms(500);					//等待500ms
@@ -102,9 +102,6 @@ u8 wh_lte_7s4_enter_config(void)
 //wh_lte_7s4模块测试主函数
 void wh_lte_7s4_test(void)
 {
-	u8 key = 0;
-	u16 timex = 0;
-
 	while(wh_lte_7s4_send_cmd("AT","OK",50))//检查4G模块是否处于指令配置模式
 	{
 		delay_ms(1000);

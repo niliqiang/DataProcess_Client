@@ -15,6 +15,10 @@ void wh_lte_7s4_udp_test(void)
 							0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 							0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 							0xD0,0xAF,0x5F,0xF5,0x23,0xD7,0x08,0x00};
+	
+	//为了调试方便，暂时使用T2来粗略表示本地时间
+	u32 T2_second = 0;
+	u32 T2_millisecond = 0; 
 
 	p=mymalloc(32);							//申请32字节内存
 	wh_lte_7s4_send_cmd("AT+WKMOD=NET","OK",50);	//网络透传模式
@@ -51,8 +55,14 @@ void wh_lte_7s4_udp_test(void)
 		}
 		if(USART3_RX_STA == 48)		//接收到一次NTP返回数据
 		{
-			for(j=0; j<48; j++)
-				printf("%02X",USART3_RX_BUF[j]);	//发送到串口   
+			for(j=0; j<4; j++)
+			{
+				T2_second |= USART3_RX_BUF[32+j]<<(8*(3-j));
+				T2_millisecond |= USART3_RX_BUF[36+j]<<(8*(3-j));
+
+			}
+			printf("%08X",T2_second);	//发送到串口   
+			printf("%08X",T2_millisecond);
 			USART3_RX_STA=0;		//清空接收标志
 		}
 		
