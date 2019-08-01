@@ -7,15 +7,20 @@
 #include "usart2.h"
 #include "common.h"
 #include "usart3.h"
+#include "lte7s4_common.h"
 
+//#define  DEBUG_USART1_RXTX
+//#define  DEBUG_USART3_RXTX
 
 int main(void)
 {
 
+#if (defined DEBUG_USART1_RXTX) || (defined DEBUG_USART3_RXTX)
 	u8 t;
 	u8 len;	
 	u16 times=0; 
-
+#endif
+	
 	delay_init();	    	 //延时函数初始化	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);// 设置中断优先级分组2
 	uart_init(115200);		//串口初始化为115200
@@ -25,42 +30,13 @@ int main(void)
 	KEY_Init();				//按键初始化
 	mem_init();				//初始化内存池	
 
-while(1)
-{
-//	printf("\r\n串口1测试\r\n");
-//	u2_printf("\r\n串口2测试\r\n");
-	u3_printf("\r\n串口3测试\r\n");
-	if(USART3_RX_STA&0x8000)
-		{
-			len=USART3_RX_STA&0x3fff;//得到此次接收到的数据长度
-			u3_printf("\r\n您发送的消息为:\r\n");
-			for(t=0;t<len;t++)
-			{
-				USART3->DR=USART3_RX_BUF[t];
-				while((USART3->SR&0X40)==0);//等待发送结束
-			}
-			u3_printf("\r\n\r\n");//插入换行
-			USART3_RX_STA=0;
-		}else
-		{
-			times++;
-			if(times%5000==0)
-			{
-				u3_printf("\r\nALIENTEK MiniSTM32开发板 串口实验\r\n");
-				u3_printf("正点原子@ALIENTEK\r\n\r\n\r\n");
-			}
-			if(times%200==0)u3_printf("请输入数据,以回车键结束\r\n");  
-			if(times%30==0)LED0=!LED0;//闪烁LED,提示系统正在运行.
-			delay_ms(10);   
-		}
-    //delay_ms(1500);
-}	
-//	printf("\r\nESP8266 WiFi测试开始\r\n");
-//	u2_printf("\r\n串口2测试\r\n");
-	//atk_8266_test();
+//	atk_8266_test();
+	wh_lte_7s4_test();
+	
+	
 	 
-	 
-/*
+#ifdef DEBUG_USART1_RXTX 
+	//串口1收发测试
 	while(1)
 	{
 		if(USART_RX_STA&0x8000)
@@ -72,22 +48,56 @@ while(1)
 				USART1->DR=USART_RX_BUF[t];
 				while((USART1->SR&0X40)==0);//等待发送结束
 			}
-			printf("\r\n\r\n");//插入换行
+			printf("\r\n");//插入换行
 			USART_RX_STA=0;
 		}else
 		{
 			times++;
-			if(times%5000==0)
+			if(times%30==0)
 			{
-				printf("\r\nALIENTEK MiniSTM32开发板 串口实验\r\n");
-				printf("正点原子@ALIENTEK\r\n\r\n\r\n");
+				printf("请输入数据,以回车键结束\r\n\r\n");
+				USART_SendData(USART1,0x1B);
+				printf("\r\n\r\n");
+				LED0=!LED0;//闪烁LED,提示系统正在运行.
 			}
-			if(times%200==0)printf("请输入数据,以回车键结束\r\n");  
-			if(times%30==0)LED0=!LED0;//闪烁LED,提示系统正在运行.
 			delay_ms(10);   
 		}
+		delay_ms(50);
 	}
-*/	
+#endif
+
+#ifdef DEBUG_USART3_RXTX 
+	//串口3收发测试
+	while(1)
+	{
+		u3_printf("\r\n串口3测试\r\n");
+		if(USART3_RX_STA&0x8000)
+		{
+			len=USART3_RX_STA&0x3fff;//得到此次接收到的数据长度
+			u3_printf("\r\n您发送的消息为:\r\n");
+			for(t=0;t<len;t++)
+			{
+				USART3->DR=USART3_RX_BUF[t];
+				while((USART3->SR&0X40)==0);//等待发送结束
+			}
+			u3_printf("\r\n");//插入换行
+			USART3_RX_STA=0;
+		}
+		else
+		{
+			times++;
+			if(times%50==0)
+			{
+				u3_printf("请输入数据,以回车键结束\r\n");  
+				USART_SendData(USART3,0x1B) ;
+				u3_printf("\r\n\r\n");
+				LED0=!LED0;//闪烁LED,提示系统正在运行.
+			}
+			delay_ms(10);   
+		}
+		delay_ms(1000);
+	}
+#endif
 }
 
 

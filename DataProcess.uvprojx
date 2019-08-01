@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC;.\HARDWARE\USART3</IncludePath>
+              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC;.\HARDWARE\USART3;.\WHLTE7S4</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -607,6 +607,21 @@
               <FileName>wifista.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ESP8266\wifista.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>WHLTE7S4</GroupName>
+          <Files>
+            <File>
+              <FileName>lte7s4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\WHLTE7S4\lte7s4.c</FilePath>
+            </File>
+            <File>
+              <FileName>lte7s4_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\WHLTE7S4\lte7s4_common.c</FilePath>
             </File>
           </Files>
         </Group>
