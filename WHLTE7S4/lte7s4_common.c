@@ -7,6 +7,16 @@
 //NTP服务器地址以及端口号:123
 const u8* NTP_server_addr = "ntp1.aliyun.com";
 const u8* NTP_portnum = "123";
+u8 NTPDataSend[48] = {	0x1B,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0xD0,0xAF,0x5F,0xF5,0x23,0xD7,0x08,0x00};
+
+//为了调试方便，暂时使用T2来粗略表示本地时间
+u32 T2_second = 0;
+u32 T2_millisecond = 0; 
 
 //usmart支持部分
 //将收到的AT指令应答数据返回给电脑串口
@@ -99,8 +109,8 @@ u8 wh_lte_7s4_enter_config(void)
 	return wh_lte_7s4_send_cmd("AT","OK",50);//进入指令配置状态判断	
 }
 
-//wh_lte_7s4模块测试主函数
-void wh_lte_7s4_test(void)
+//wh_lte_7s4模块配置主函数
+void wh_lte_7s4_config(void)
 {
 	while(wh_lte_7s4_send_cmd("AT","OK",50))//检查4G模块是否处于指令配置模式
 	{
@@ -112,7 +122,7 @@ void wh_lte_7s4_test(void)
 	while(wh_lte_7s4_send_cmd("AT+E=OFF","OK",50));//关闭回显
 	printf("4G模块连接成功，开始配置并测试UDP模式...\r\n");
 	delay_ms(50); 
-	wh_lte_7s4_udp_test();	//网络透传UDP测试
+	wh_lte_7s4_udp_config();	//网络透传UDP测试
 }
 
 

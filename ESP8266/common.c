@@ -16,7 +16,8 @@
 //用户配置区
 
 //连接端口号:8086,可自行修改为其他端口.
-const u8* portnum="8086";		 
+const u8* portnum="8086";
+const u8 ipbuf[16] = "192.168.43.1"; 	//TCP IP
 
 //WIFI STA模式,设置要去连接的路由器无线参数,请根据你自己的路由器设置,自行修改.
 const u8* wifista_ssid="TestByNLQ";			//路由器SSID号
@@ -179,48 +180,20 @@ void atk_8266_get_wanip(u8* ipbuf)
 }
 
 
-//ATK-ESP8266模块测试主函数
-void atk_8266_test(void)
+//ATK-ESP8266模块配置主函数
+void atk_8266_config(void)
 {
-	u8 key = 0;
-	u16 timex = 0;
-
 	while(atk_8266_send_cmd("AT","OK",20))//检查WIFI模块是否在线
 	{
 		atk_8266_quit_trans();//退出透传
 		atk_8266_send_cmd("AT+CIPMODE=0","OK",200);  //关闭透传模式
-		printf("未检测到WIFI模块！\r\n");
-		delay_ms(800);
-        printf("尝试连接模块...\r\n");
+		printf("未检测到WIFI模块！1S后尝试连接模块...\r\n");
+		delay_ms(1000);
 	} 
 	while(atk_8266_send_cmd("ATE0","OK",20));//关闭回显
-	printf("WIFI模块连接成功\r\n");
-	printf("按下 KEY0 开始配置ESP8266模块...\r\n");
-	while(1)
-	{
-		delay_ms(10); 
-		atk_8266_at_response(1);//检查ATK-ESP8266模块发送过来的数据,及时上传给电脑
-		key = KEY_Scan(0); 
-		if(key)
-		{
-			switch(key)
-			{
-				case 1://KEY0
-					printf("正在配置ESP8266模块为串口无线 STA(COM-STA) 模式，请稍等...\r\n");
-					atk_8266_wifista_test();	//WIFI STA测试
-					break;
-				case 2://KEY1
-					//atk_8266_apsta_test();	//串口以太网测试
-					break;
-				case 4://WK_UP
-					//atk_8266_wifiap_test();	//WIFI AP测试
-					break;
-			}
-			timex=0;
-		} 	 
-		if((timex%20)==0)LED0=!LED0;//200ms闪烁 
-		timex++;	 
-	} 
+	printf("WIFI模块连接成功，开始配置并测试STA(COM-STA)模式...\r\n");
+	delay_ms(50);
+	atk_8266_wifista_config();	//WIFI STA测试
 }
 
 

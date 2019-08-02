@@ -34,15 +34,16 @@ u8 atk_8266_send_cmd(u8 *cmd,u8 *ack,u16 waittime);
 u8 atk_8266_quit_trans(void);
 u8 atk_8266_consta_check(void);
 void atk_8266_get_wanip(u8* ipbuf);
-void atk_8266_test(void);
-
+void atk_8266_config(void);
 
 //u8 atk_8266_apsta_test(void);		//WIFI AP+STA模式测试
-u8 atk_8266_wifista_test(void);		//WIFI STA测试
+void atk_8266_wifista_config(void);		//WIFI STA测试
 //u8 atk_8266_wifiap_test(void);	//WIFI AP测试
+void atk_8266_data_process(u32 T2_second, u32 T2_millisecond);	//给Server发送数据
 
 //用户配置参数
 extern const u8* portnum;			//连接端口
+extern const u8 ipbuf[16];
  
 extern const u8* wifista_ssid;		//WIFI STA SSID
 extern const u8* wifista_encryption;//WIFI STA 加密方式

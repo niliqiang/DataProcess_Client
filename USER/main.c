@@ -17,9 +17,13 @@ int main(void)
 
 #if (defined DEBUG_USART1_RXTX) || (defined DEBUG_USART3_RXTX)
 	u8 t;
-	u8 len;	
-	u16 times=0; 
+	u8 len;	 
 #endif
+	
+	u8 key;
+	u16 times=0;
+	
+
 	
 	delay_init();	    	 //延时函数初始化	
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);// 设置中断优先级分组2
@@ -29,11 +33,37 @@ int main(void)
 	LED_Init();				//初始化与LED连接的硬件接口
 	KEY_Init();				//按键初始化
 	mem_init();				//初始化内存池	
-
-//	atk_8266_test();
-	wh_lte_7s4_test();
 	
-	
+	printf("\r\n开始配置4G模块、ESP8266模块...\r\n");
+	wh_lte_7s4_config();
+	atk_8266_config();
+	printf("4G模块、ESP8266模块配置完成！\r\n");
+	printf("按下KEY0获取当前时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	
+	while(1)
+	{
+		delay_ms(10); 
+		key = KEY_Scan(0);
+		if(key == KEY0_PRES)
+		{
+			wh_lte_7s4_data_process();
+			times=0;
+		}
+		if(key == KEY1_PRES)
+		{
+			atk_8266_data_process(T2_second, T2_millisecond);
+			times=0;
+		}
+		if(key == WKUP_PRES)
+		{
+			atk_8266_quit_trans();		//退出透传
+			atk_8266_send_cmd("AT+CIPMODE=0", "OK", 20);
+			break;
+		}
+		
+		if((times%100)==0)LED0=!LED0;//1000ms闪烁 
+		times++;
+		
+	}
 	 
 #ifdef DEBUG_USART1_RXTX 
 	//串口1收发测试
