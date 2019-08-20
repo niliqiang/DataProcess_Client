@@ -42,6 +42,7 @@ void atk_8266_wifista_config(void);		//WIFI STA测试
 void atk_8266_data_process(u32 T2_second, u32 T2_millisecond);	//给Server发送数据
 
 //用户配置参数
+extern const u8* clientId;
 extern const u8* portnum;			//连接端口
 extern const u8 ipbuf[16];
  

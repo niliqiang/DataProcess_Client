@@ -35,7 +35,7 @@ int main(void)
 	mem_init();				//初始化内存池	
 	
 	printf("\r\n开始配置4G模块、ESP8266模块...\r\n");
-	wh_lte_7s4_config();
+	//wh_lte_7s4_config();
 	atk_8266_config();
 	printf("4G模块、ESP8266模块配置完成！\r\n");
 	printf("按下KEY0获取当前时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	

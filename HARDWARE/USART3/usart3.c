@@ -23,7 +23,7 @@ void USART3_Init(u32 bound)
     GPIO_InitTypeDef GPIO_InitStructure; 
    
 	//使能串口的RCC时钟
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB , ENABLE); //??UART3??GPIOB???    
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB , ENABLE);  
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);    
 
 	//串口使用的GPIO设置  

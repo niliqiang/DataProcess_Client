@@ -42,7 +42,7 @@ void atk_8266_wifista_config(void)
 	{
 		atk_8266_send_cmd("AT+CIPMUX=0","OK",20);   //0:单连接,1:多连接		
 		sprintf((char*)p,"AT+CIPSTART=\"TCP\",\"%s\",%s",ipbuf,(u8*)portnum);    //配置目标TCP Server
-		while(atk_8266_send_cmd(p,"OK",200))
+		while(atk_8266_send_cmd(p,"OK",300))
 		{
 			printf("ESP8266连接TCP失败, IP:%s, Port:%s\r\n", ipbuf, (u8*)portnum);
 		}		
@@ -71,10 +71,21 @@ void atk_8266_data_process(u32 T2_second, u32 T2_millisecond)
 	else if(netpro&0x01)		//TCP client  透传模式
 	{
 		atk_8266_quit_trans();
-		atk_8266_send_cmd("AT+CIPSEND","OK",20);         //开始透传           
-		u2_printf("%08X",T2_second);
+		atk_8266_send_cmd("AT+CIPSEND","OK",20);         //开始透传
+
+		u2_printf("POST /dataInfo/store?clientId=%s&clientTime=2208988801&airPara=60 HTTP/1.1\r\n", clientId);
+		delay_ms(10);//延时一段时间等待发送完成
+		u2_printf("Content-Type: application/json;charset=utf-8\r\n");
+		delay_ms(10);
+		u2_printf("Host: %s:%s\r\n", ipbuf, (u8*)portnum);
+		delay_ms(10);
+		u2_printf("Connection: Keep Alive\r\n");
+		delay_ms(10);
+		u2_printf("\r\n");
+
+		//u2_printf("%08X",T2_second);
 		delay_ms(200);
-		u2_printf("%08X",T2_millisecond);
+		//u2_printf("%08X",T2_millisecond);
 	}
 	else if((netpro==3)||(netpro==2))   //UDP(待完善)
 	{
