@@ -38,19 +38,20 @@ int main(void)
 	//wh_lte_7s4_config();
 	atk_8266_config();
 	printf("4G模块、ESP8266模块配置完成！\r\n");
-	printf("按下KEY0获取当前时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	
+	printf("按下KEY0测量当前空气质量并获取时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	
 	while(1)
 	{
 		delay_ms(10); 
 		key = KEY_Scan(0);
 		if(key == KEY0_PRES)
 		{
+			//先测AQI
 			wh_lte_7s4_data_process();
 			times=0;
 		}
 		if(key == KEY1_PRES)
-		{
-			atk_8266_data_process(T2_second, T2_millisecond);
+		{			
+			atk_8266_data_process(timestamp);
 			times=0;
 		}
 		if(key == WKUP_PRES)

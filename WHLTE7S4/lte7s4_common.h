@@ -8,7 +8,7 @@
 #include "malloc.h"	 	 	 	 	 
 #include "string.h"    	
 #include "usart3.h" 
-	
+#include <inttypes.h>	
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
@@ -27,8 +27,9 @@ void wh_lte_7s4_data_process(void);
 extern const u8* NTP_server_addr;	//NTP 服务器地址
 extern const u8* NTP_portnum;		//连接端口
 extern u8 NTPDataSend[48];
-extern u32 T2_second;
-extern u32 T2_millisecond; 
+extern uint64_t T_Integer[4];
+extern uint64_t T_Fraction[4]; 
+extern uint64_t timestamp;
 #endif
 
 

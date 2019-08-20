@@ -43,18 +43,20 @@ void wh_lte_7s4_data_process(void)
 		if(USART3_RX_STA == 48)	//接收到一次NTP返回数据
 		{
 			//先清零，以免溢出
-			T2_second = 0;
-			T2_millisecond = 0;
+			T_Integer[1] = 0;
+			T_Fraction[1] = 0;
+			timestamp = 0;
 			for(j=0; j<4; j++)
 			{
-				T2_second |= USART3_RX_BUF[32+j]<<(8*(3-j));
-				T2_millisecond |= USART3_RX_BUF[36+j]<<(8*(3-j));
+				T_Integer[1] |= USART3_RX_BUF[32+j]<<(8*(3-j));
+				T_Fraction[1] |= USART3_RX_BUF[36+j]<<(8*(3-j));
 
 			}
-			printf("%08X",T2_second);	//发送到串口
-			printf("\t");
-			printf("%08X",T2_millisecond);
+			timestamp = (T_Integer[1]-0x83AA7E80)*1000 + T_Fraction[1]*1000/4294967296;
+			
+			printf("Timestamp: %"PRIu64"",timestamp);	//发送到串口
 			printf("\r\n");
+			
 			USART3_RX_STA=0;		//清空接收标志
 			return;
 		}

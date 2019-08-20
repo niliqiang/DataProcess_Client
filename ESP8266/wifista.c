@@ -1,5 +1,6 @@
 #include "common.h"
 #include "stdlib.h"
+//#include <inttypes.h>
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //ALIENTEK STM32开发板
@@ -59,7 +60,7 @@ void atk_8266_wifista_config(void)
 
 //ATK-ESP8266 Data Process
 //用于向Server发送数据
-void atk_8266_data_process(u32 T2_second, u32 T2_millisecond)
+void atk_8266_data_process(uint64_t timestamp)
 {
 	u16 rlen=0;
 	USART2_RX_STA = 0;
@@ -73,7 +74,7 @@ void atk_8266_data_process(u32 T2_second, u32 T2_millisecond)
 		atk_8266_quit_trans();
 		atk_8266_send_cmd("AT+CIPSEND","OK",20);         //开始透传
 
-		u2_printf("POST /dataInfo/store?clientId=%s&clientTime=2208988801&airPara=60 HTTP/1.1\r\n", clientId);
+		u2_printf("POST /dataInfo/store?clientId=%s&clientTime=%"PRIu64"&airPara=60 HTTP/1.1\r\n", clientId, timestamp);
 		delay_ms(10);//延时一段时间等待发送完成
 		u2_printf("Content-Type: application/json;charset=utf-8\r\n");
 		delay_ms(10);
@@ -82,10 +83,6 @@ void atk_8266_data_process(u32 T2_second, u32 T2_millisecond)
 		u2_printf("Connection: Keep Alive\r\n");
 		delay_ms(10);
 		u2_printf("\r\n");
-
-		//u2_printf("%08X",T2_second);
-		delay_ms(200);
-		//u2_printf("%08X",T2_millisecond);
 	}
 	else if((netpro==3)||(netpro==2))   //UDP(待完善)
 	{

@@ -15,8 +15,9 @@ u8 NTPDataSend[48] = {	0x1B,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 						0xD0,0xAF,0x5F,0xF5,0x23,0xD7,0x08,0x00};
 
 //为了调试方便，暂时使用T2来粗略表示本地时间
-u32 T2_second = 0;
-u32 T2_millisecond = 0; 
+uint64_t T_Integer[4] = {0};
+uint64_t T_Fraction[4] = {0}; 
+uint64_t timestamp = 0;
 
 //usmart支持部分
 //将收到的AT指令应答数据返回给电脑串口

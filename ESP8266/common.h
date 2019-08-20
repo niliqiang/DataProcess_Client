@@ -8,6 +8,7 @@
 #include "malloc.h"	 	 	 	 	 
 #include "string.h"    	
 #include "usart2.h" 
+#include <inttypes.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
@@ -39,7 +40,7 @@ void atk_8266_config(void);
 //u8 atk_8266_apsta_test(void);		//WIFI AP+STA模式测试
 void atk_8266_wifista_config(void);		//WIFI STA测试
 //u8 atk_8266_wifiap_test(void);	//WIFI AP测试
-void atk_8266_data_process(u32 T2_second, u32 T2_millisecond);	//给Server发送数据
+void atk_8266_data_process(uint64_t timestamp);	//给Server发送数据
 
 //用户配置参数
 extern const u8* clientId;
