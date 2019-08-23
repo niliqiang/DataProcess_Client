@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC;.\HARDWARE\USART3;.\WHLTE7S4</IncludePath>
+              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC;.\HARDWARE\USART3;.\WHLTE7S4;.\HARDWARE\UART4</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -592,6 +592,11 @@
               <FileName>usart3.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\HARDWARE\USART3\usart3.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HARDWARE\UART4\uart4.c</FilePath>
             </File>
           </Files>
         </Group>

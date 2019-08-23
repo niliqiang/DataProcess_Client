@@ -8,14 +8,16 @@
 #include "common.h"
 #include "usart3.h"
 #include "lte7s4_common.h"
+#include "uart4.h"
 
 //#define  DEBUG_USART1_RXTX
 //#define  DEBUG_USART3_RXTX
+#define  DEBUG_UART4_RXTX
 
 int main(void)
 {
 
-#if (defined DEBUG_USART1_RXTX) || (defined DEBUG_USART3_RXTX)
+#if (defined DEBUG_USART1_RXTX) || (defined DEBUG_USART3_RXTX) || (defined DEBUG_UART4_RXTX)
 	u8 t;
 	u8 len;	 
 #endif
@@ -30,10 +32,13 @@ int main(void)
 	uart_init(115200);		//串口初始化为115200
 	USART2_Init(115200);	//初始化串口2波特率为115200
 	USART3_Init(9600);		//初始化串口3波特率为9600
+	UART4_Init(9600);		//初始化串口4波特率为9600
 	LED_Init();				//初始化与LED连接的硬件接口
 	KEY_Init();				//按键初始化
 	mem_init();				//初始化内存池	
 	
+#if (!defined DEBUG_USART1_RXTX) && (!defined DEBUG_USART3_RXTX) && (!defined DEBUG_UART4_RXTX)
+
 	printf("\r\n开始配置4G模块、ESP8266模块...\r\n");
 	//wh_lte_7s4_config();
 	atk_8266_config();
@@ -65,6 +70,8 @@ int main(void)
 		times++;
 		
 	}
+	
+#endif
 	 
 #ifdef DEBUG_USART1_RXTX 
 	//串口1收发测试
@@ -73,7 +80,7 @@ int main(void)
 		if(USART_RX_STA&0x8000)
 		{
 			len=USART_RX_STA&0x3fff;//得到此次接收到的数据长度
-			printf("\r\n您发送的消息为:\r\n");
+			printf("\r\n【串口1】您发送的消息为:\r\n");
 			for(t=0;t<len;t++)
 			{
 				USART1->DR=USART_RX_BUF[t];
@@ -86,14 +93,12 @@ int main(void)
 			times++;
 			if(times%30==0)
 			{
-				printf("请输入数据,以回车键结束\r\n\r\n");
-				USART_SendData(USART1,0x1B);
-				printf("\r\n\r\n");
+				printf("\r\n【串口1】请输入数据,以回车键结束\r\n\r\n");
 				LED0=!LED0;//闪烁LED,提示系统正在运行.
 			}
 			delay_ms(10);   
 		}
-		delay_ms(50);
+		delay_ms(100);
 	}
 #endif
 
@@ -101,11 +106,10 @@ int main(void)
 	//串口3收发测试
 	while(1)
 	{
-		u3_printf("\r\n串口3测试\r\n");
 		if(USART3_RX_STA&0x8000)
 		{
 			len=USART3_RX_STA&0x3fff;//得到此次接收到的数据长度
-			u3_printf("\r\n您发送的消息为:\r\n");
+			u3_printf("\r\n【串口3】您发送的消息为:\r\n");
 			for(t=0;t<len;t++)
 			{
 				USART3->DR=USART3_RX_BUF[t];
@@ -117,18 +121,46 @@ int main(void)
 		else
 		{
 			times++;
-			if(times%50==0)
+			if(times%30==0)
 			{
-				u3_printf("请输入数据,以回车键结束\r\n");  
-				USART_SendData(USART3,0x1B) ;
-				u3_printf("\r\n\r\n");
+				u3_printf("\r\n【串口3】请输入数据,以回车键结束\r\n");  
 				LED0=!LED0;//闪烁LED,提示系统正在运行.
 			}
 			delay_ms(10);   
 		}
-		delay_ms(1000);
+		delay_ms(100);
 	}
 #endif
+	
+#ifdef DEBUG_UART4_RXTX 
+	//串口4收发测试
+	while(1)
+	{
+		if(UART4_RX_STA&0x8000)
+		{
+			len=UART4_RX_STA&0x3fff;//得到此次接收到的数据长度
+			u4_printf("\r\n【串口4】您发送的消息为:\r\n");
+			for(t=0;t<len;t++)
+			{
+				UART4->DR=UART4_RX_BUF[t];
+				while((UART4->SR&0X40)==0);//等待发送结束
+			}
+			u4_printf("\r\n");//插入换行
+			UART4_RX_STA=0;
+		}
+		else
+		{
+			times++;
+			if(times%30==0)
+			{
+				u4_printf("\r\n【串口4】请输入数据,以回车键结束\r\n");  
+				LED0=!LED0;//闪烁LED,提示系统正在运行.
+			}
+			delay_ms(10);   
+		}
+		delay_ms(100);
+	}
+#endif	
+	
 }
-
 
