@@ -19,7 +19,7 @@ const u8* clientId = "0";
 
 //连接端口号:8080,可根据实际情况自行修改为其他端口.
 const u8* portnum="8080";
-const u8 ipbuf[16] = "10.128.200.212"; 	//TCP IP
+const u8 ipbuf[16] = "10.17.57.227"; 	//TCP IP
 
 //WIFI STA模式,设置要去连接的路由器无线参数,请根据你自己的路由器设置,自行修改.
 const u8* wifista_ssid="TestByNLQ";			//路由器SSID号

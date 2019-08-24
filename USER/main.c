@@ -9,10 +9,11 @@
 #include "usart3.h"
 #include "lte7s4_common.h"
 #include "uart4.h"
+#include "pms5003.h"
 
 //#define  DEBUG_USART1_RXTX
 //#define  DEBUG_USART3_RXTX
-#define  DEBUG_UART4_RXTX
+//#define  DEBUG_UART4_RXTX
 
 int main(void)
 {
@@ -39,11 +40,12 @@ int main(void)
 	
 #if (!defined DEBUG_USART1_RXTX) && (!defined DEBUG_USART3_RXTX) && (!defined DEBUG_UART4_RXTX)
 
-	printf("\r\n开始配置4G模块、ESP8266模块...\r\n");
+	printf("\r\n开始配置PMS5003模块、4G模块、ESP8266模块...\r\n");
+	pms5003_config();
 	//wh_lte_7s4_config();
 	atk_8266_config();
-	printf("4G模块、ESP8266模块配置完成！\r\n");
-	printf("按下KEY0测量当前空气质量并获取时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	
+	printf("PMS5003模块、4G模块、ESP8266模块配置完成！\r\n");
+	printf("按下KEY0开始测量当前空气质量并获取时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	
 	while(1)
 	{
 		delay_ms(10); 
@@ -51,12 +53,13 @@ int main(void)
 		if(key == KEY0_PRES)
 		{
 			//先测AQI
-			wh_lte_7s4_data_process();
+			while(pms5003_data_process());
+			//wh_lte_7s4_data_process();
 			times=0;
 		}
 		if(key == KEY1_PRES)
 		{			
-			atk_8266_data_process(timestamp);
+			atk_8266_data_process(timestamp, PM25);
 			times=0;
 		}
 		if(key == WKUP_PRES)

@@ -54,13 +54,14 @@ void atk_8266_wifista_config(void)
 	{
 
 	}
-	printf("ESP8266模块配置成功！\r\n");
 	myfree(p);		//释放内存 	
+	delay_ms(20);
+	printf("ESP8266模块配置成功！\r\n");
 } 
 
 //ATK-ESP8266 Data Process
 //用于向Server发送数据
-void atk_8266_data_process(uint64_t timestamp)
+void atk_8266_data_process(uint64_t timestamp, u16 PM25)
 {
 	u16 rlen=0;
 	USART2_RX_STA = 0;
@@ -74,7 +75,7 @@ void atk_8266_data_process(uint64_t timestamp)
 		atk_8266_quit_trans();
 		atk_8266_send_cmd("AT+CIPSEND","OK",20);         //开始透传
 
-		u2_printf("POST /dataInfo/store?clientId=%s&clientTime=%"PRIu64"&airPara=60 HTTP/1.1\r\n", clientId, timestamp);
+		u2_printf("POST /dataInfo/store?clientId=%s&clientTime=%"PRIu64"&airPara=%d HTTP/1.1\r\n", clientId, timestamp, PM25);
 		delay_ms(10);//延时一段时间等待发送完成
 		u2_printf("Content-Type: application/json;charset=utf-8\r\n");
 		delay_ms(10);

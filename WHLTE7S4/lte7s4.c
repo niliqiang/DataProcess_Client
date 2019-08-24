@@ -23,9 +23,10 @@ void wh_lte_7s4_udp_config()
 	printf("4G模块配置成功，等待重启完成...\r\n");
 	for(i=0; i<20; i++)		//延时20S等待重启成功
 	{
-		delay_ms(1000);
+		
 	}
 	myfree(p);		//释放内存 
+	delay_ms(20);
 	printf("4G模块重启完成！\r\n");
 		
 } 
@@ -54,9 +55,7 @@ void wh_lte_7s4_data_process(void)
 			}
 			timestamp = (T_Integer[1]-0x83AA7E80)*1000 + T_Fraction[1]*1000/4294967296;
 			
-			printf("Timestamp: %"PRIu64"",timestamp);	//发送到串口
-			printf("\r\n");
-			
+			printf("Timestamp: %"PRIu64"\r\n",timestamp);	//发送到串口
 			USART3_RX_STA=0;		//清空接收标志
 			return;
 		}
