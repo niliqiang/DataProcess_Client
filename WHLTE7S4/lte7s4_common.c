@@ -117,7 +117,10 @@ void wh_lte_7s4_config(void)
 	{
 		delay_ms(1000);
 		wh_lte_7s4_enter_config();//退出透传，进入指令配置模式
-		printf("未检测到4G模块！2秒后尝试重新连接模块...\r\n\r\n");
+		printf("未检测到4G模块！5秒后尝试重新连接模块...\r\n\r\n");
+		delay_ms(1000);
+		delay_ms(1000);
+		delay_ms(1000);
 		delay_ms(1000);
 	} 
 	while(wh_lte_7s4_send_cmd("AT+E=OFF","OK",50));//关闭回显

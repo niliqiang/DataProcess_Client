@@ -42,7 +42,7 @@ int main(void)
 
 	printf("\r\n开始配置PMS5003模块、4G模块、ESP8266模块...\r\n");
 	pms5003_config();
-	//wh_lte_7s4_config();
+	wh_lte_7s4_config();
 	atk_8266_config();
 	printf("PMS5003模块、4G模块、ESP8266模块配置完成！\r\n");
 	printf("按下KEY0开始测量当前空气质量并获取时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	
@@ -54,7 +54,7 @@ int main(void)
 		{
 			//先测AQI
 			while(pms5003_data_process());
-			//wh_lte_7s4_data_process();
+			wh_lte_7s4_data_process();
 			times=0;
 		}
 		if(key == KEY1_PRES)
@@ -69,7 +69,7 @@ int main(void)
 			break;
 		}
 		
-		if((times%100)==0)LED0=!LED0;//1000ms闪烁 
+		if((times%200)==0)LED0=!LED0;//1000ms闪烁 
 		times++;
 		
 	}

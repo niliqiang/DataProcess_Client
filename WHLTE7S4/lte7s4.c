@@ -23,7 +23,7 @@ void wh_lte_7s4_udp_config()
 	printf("4G模块配置成功，等待重启完成...\r\n");
 	for(i=0; i<20; i++)		//延时20S等待重启成功
 	{
-		
+		delay_ms(1000);
 	}
 	myfree(p);		//释放内存 
 	delay_ms(20);
@@ -40,7 +40,7 @@ void wh_lte_7s4_data_process(void)
 	wh_lte_7s4_send_data(NTPDataSend, 48);	//发送NTP请求数据
 	while(1)
 	{
-		delay_ms(10); 
+		delay_ms(20); 
 		if(USART3_RX_STA == 48)	//接收到一次NTP返回数据
 		{
 			//先清零，以免溢出
@@ -49,8 +49,8 @@ void wh_lte_7s4_data_process(void)
 			timestamp = 0;
 			for(j=0; j<4; j++)
 			{
-				T_Integer[1] |= USART3_RX_BUF[32+j]<<(8*(3-j));
-				T_Fraction[1] |= USART3_RX_BUF[36+j]<<(8*(3-j));
+				T_Integer[1] |= (uint64_t)USART3_RX_BUF[32+j]<<(8*(3-j));
+				T_Fraction[1] |= (uint64_t)USART3_RX_BUF[36+j]<<(8*(3-j));
 
 			}
 			timestamp = (T_Integer[1]-0x83AA7E80)*1000 + T_Fraction[1]*1000/4294967296;

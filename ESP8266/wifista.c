@@ -99,7 +99,7 @@ void atk_8266_data_process(uint64_t timestamp, u16 PM25)
 			USART2_RX_BUF[rlen]=0;		//添加结束符 
 			printf("%s",USART2_RX_BUF);	//发送到串口   
 			USART2_RX_STA=0;
-			break;
+			return;
 		}
 	}
 }
