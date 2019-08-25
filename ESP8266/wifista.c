@@ -64,7 +64,8 @@ void atk_8266_wifista_config(void)
 //用于向Server发送数据
 void atk_8266_data_process(uint64_t timestamp, u16 PM25)
 {
-	u16 rlen=0;
+	u8 times = 0;
+	u16 rlen = 0;
 	USART2_RX_STA = 0;
 	
 	if(netpro&0x00)		//TCP server(待完善)
@@ -93,14 +94,21 @@ void atk_8266_data_process(uint64_t timestamp, u16 PM25)
 	
 	while(1)
 	{
-		delay_ms(10);
-		if(USART2_RX_STA&0X8000)		//接收到一次数据了
+		delay_ms(50);
+		if(USART2_RX_STA & 0X8000)		//接收到一次数据了
 		{
 			rlen=USART2_RX_STA&0X7FFF;	//得到本次接收到的数据长度
 			USART2_RX_BUF[rlen]=0;		//添加结束符 
-			printf("%s",USART2_RX_BUF);	//发送到串口   
+			printf("USART2: %s",USART2_RX_BUF);	//发送到串口   
 			USART2_RX_STA=0;
-			return;
+		}
+		else
+		{
+			times++;
+			if(times%30==0)
+			{
+				return;
+			}
 		}
 	}
 }

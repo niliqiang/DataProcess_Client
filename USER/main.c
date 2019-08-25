@@ -57,7 +57,7 @@ int main(void)
 			mode = 0;
 			//œ»≤‚AQI
 			while(pms5003_data_process(mode));
-			wh_lte_7s4_data_process();
+			while(wh_lte_7s4_data_process());
 			atk_8266_data_process(timestamp, PM25);
 		}
 		if(keyManual == KEY1_PRES)

@@ -21,7 +21,7 @@ u8 wh_lte_7s4_enter_config(void);
 
 void wh_lte_7s4_config(void);
 void wh_lte_7s4_udp_config(void);
-void wh_lte_7s4_data_process(void);
+u8 wh_lte_7s4_data_process(void);
 
 //用户配置参数
 extern const u8* NTP_server_addr;	//NTP 服务器地址

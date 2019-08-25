@@ -86,7 +86,7 @@ void TIM3_IRQHandler(void)   //TIM3中断
 		{
 			TIM_ClearITPendingBit(TIM3, TIM_IT_Update  );  //清除TIMx的中断待处理位:TIM 中断源 
 			if(pms5003_data_process(1)) return;
-			wh_lte_7s4_data_process();
+			if(wh_lte_7s4_data_process()) return;
 			atk_8266_data_process(timestamp, PM25);
 		}
 }

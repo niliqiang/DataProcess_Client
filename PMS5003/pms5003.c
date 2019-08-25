@@ -31,14 +31,14 @@ void pms5003_send_data(u8 *data, u8 dataNum)
 //工作模式转为被动式(passive mode)
 u8 pms5003_config()
 {
-	u8 j;
+	u8 j, times = 0;
 	UART4_RX_STA = 0;	//清空接收标志，准备接收数据
 	pms5003_send_data(passiveCode, 7);
 	delay_ms(20);
 	//配置结果检验
 	while(1)
 	{
-		delay_ms(10); 
+		delay_ms(50); 
 		if(UART4_RX_STA == 8)	//接收到一次PMS5003返回数据
 		{
 			UART4_RX_STA=0;		//清空接收标志
@@ -54,6 +54,18 @@ u8 pms5003_config()
 			}
 			printf("PMS5003模块配置成功！\r\n");
 			return 0;
+		}
+		else
+		{
+			times++;
+			if(times%20==0)
+			{
+				printf("PMS5003模块配置失败！2秒后重新配置...\r\n");
+				delay_ms(1000);
+				delay_ms(1000);
+				times = 0;
+				return 1;
+			}
 		}
 	}
 }
@@ -109,6 +121,7 @@ u8 pms5003_data_process(u8 mode)
 				{
 					printf("PMS5003返回数据有误！5秒后重新发送请求...\r\n");
 				}
+				times = 0;
 				return 1;
 			}
 		}

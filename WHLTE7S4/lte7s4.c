@@ -33,14 +33,14 @@ void wh_lte_7s4_udp_config()
 
 //whlte7s4 UDP Data Process
 //用于同步时间
-void wh_lte_7s4_data_process(void)
+u8 wh_lte_7s4_data_process(void)
 {
-	u8 j;
+	u8 j, times = 0;
 	USART3_RX_STA = 0;	//清空接收标志，准备接收数据
 	wh_lte_7s4_send_data(NTPDataSend, 48);	//发送NTP请求数据
 	while(1)
 	{
-		delay_ms(20); 
+		delay_ms(50); 
 		if(USART3_RX_STA == 48)	//接收到一次NTP返回数据
 		{
 			//先清零，以免溢出
@@ -57,7 +57,17 @@ void wh_lte_7s4_data_process(void)
 			
 			printf("Timestamp: %"PRIu64"\r\n",timestamp);	//发送到串口
 			USART3_RX_STA=0;		//清空接收标志
-			return;
+			return 0;
+		}
+		else
+		{
+			times++;
+			if(times%20==0)
+			{
+				printf("4G模块返回数据有误！5秒后重新发送请求...\r\n");
+				times = 0;
+				return 1;
+			}
 		}
 	}
 }
