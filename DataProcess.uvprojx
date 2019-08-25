@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC;.\HARDWARE\USART3;.\WHLTE7S4;.\HARDWARE\UART4;.\PMS5003</IncludePath>
+              <IncludePath>.\CORE;.\HARDWARE\KEY;.\HARDWARE\LED;.\STM32F10x_FWLib\inc;.\SYSTEM\delay;.\SYSTEM\sys;.\SYSTEM\usart;.\USER;.\ESP8266;.\HARDWARE\USART2;.\MALLOC;.\HARDWARE\USART3;.\WHLTE7S4;.\HARDWARE\UART4;.\PMS5003;.\HARDWARE\TIMER</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -598,20 +598,25 @@
               <FileType>1</FileType>
               <FilePath>.\HARDWARE\UART4\uart4.c</FilePath>
             </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HARDWARE\TIMER\timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>ESP8266</GroupName>
           <Files>
             <File>
-              <FileName>common.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ESP8266\common.c</FilePath>
-            </File>
-            <File>
               <FileName>wifista.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ESP8266\wifista.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp8266_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ESP8266\esp8266_common.c</FilePath>
             </File>
           </Files>
         </Group>

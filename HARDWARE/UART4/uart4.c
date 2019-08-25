@@ -54,15 +54,11 @@ void UART4_Init(u32 bound)
 	USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);     
 
 	// Enable the UART4     
-	USART_Cmd(UART4, ENABLE);   
-
-	//¥Æø⁄÷–∂œ≈‰÷√ 
-	//Configure the NVIC Preemption Priority Bits       
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);    
+	USART_Cmd(UART4, ENABLE);      
 
 	// Enable the USART4 Interrupt     
 	NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;    
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;    
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;    
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;    
 	NVIC_Init(&NVIC_InitStructure);

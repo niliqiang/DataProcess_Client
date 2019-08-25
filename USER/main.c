@@ -5,11 +5,12 @@
 #include "usart.h"
 #include "malloc.h"
 #include "usart2.h"
-#include "common.h"
+#include "esp8266_common.h"
 #include "usart3.h"
 #include "lte7s4_common.h"
 #include "uart4.h"
 #include "pms5003.h"
+#include "timer.h"
 
 //#define  DEBUG_USART1_RXTX
 //#define  DEBUG_USART3_RXTX
@@ -23,7 +24,7 @@ int main(void)
 	u8 len;	 
 #endif
 	
-	u8 key;
+	u8 key, mode;
 	u16 times=0;
 	
 
@@ -37,30 +38,54 @@ int main(void)
 	LED_Init();				//初始化与LED连接的硬件接口
 	KEY_Init();				//按键初始化
 	mem_init();				//初始化内存池	
+	TIM3_Int_Init(49999,7199);//10Khz的计数频率，计数到50000为5000ms  
 	
 #if (!defined DEBUG_USART1_RXTX) && (!defined DEBUG_USART3_RXTX) && (!defined DEBUG_UART4_RXTX)
 
 	printf("\r\n开始配置PMS5003模块、4G模块、ESP8266模块...\r\n");
 	pms5003_config();
-	wh_lte_7s4_config();
-	atk_8266_config();
+	//wh_lte_7s4_config();
+	//atk_8266_config();
 	printf("PMS5003模块、4G模块、ESP8266模块配置完成！\r\n");
-	printf("按下KEY0开始测量当前空气质量并获取时间；按下KEY1给Server发送数据；按下WK_UP退出终端系统。\r\n");	
+	printf("按下KEY0进入手动模式；按下KEY1进入自动模式；按下WK_UP退出终端系统。\r\n");	
 	while(1)
 	{
 		delay_ms(10); 
 		key = KEY_Scan(0);
 		if(key == KEY0_PRES)
 		{
+			printf("【手动模式】\r\n");
+			mode = 0;
 			//先测AQI
-			while(pms5003_data_process());
-			wh_lte_7s4_data_process();
-			times=0;
+			while(pms5003_data_process(mode));
+			//wh_lte_7s4_data_process();
+			//atk_8266_data_process(timestamp, PM25);
 		}
 		if(key == KEY1_PRES)
-		{			
-			atk_8266_data_process(timestamp, PM25);
-			times=0;
+		{
+			printf("【自动模式】时间间隔：5秒；按下WK_UP退出自动模式。\r\n");
+			//打开中断
+			TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+			TIM_Cmd(TIM3, ENABLE);  //使能TIMx外设
+			while(1)
+			{
+				delay_ms(10); 
+				key = KEY_Scan(0);
+				if(key == WKUP_PRES)
+				{
+					//关闭中断
+					TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+					TIM_Cmd(TIM3, DISABLE);  //使能TIMx外设
+					printf("自动模式退出成功。\r\n按下KEY0进入手动模式；按下KEY1进入自动模式；按下WK_UP退出终端系统。\r\n");
+					break;
+				}
+				if((times%100)==0)
+				{
+					times = 0;
+					LED0=!LED0;//1s闪烁 
+				}
+				times++;	
+			}
 		}
 		if(key == WKUP_PRES)
 		{
@@ -68,10 +93,12 @@ int main(void)
 			atk_8266_send_cmd("AT+CIPMODE=0", "OK", 20);
 			break;
 		}
-		
-		if((times%200)==0)LED0=!LED0;//1000ms闪烁 
+		if((times%200)==0)
+		{
+			times = 0;
+			LED0=!LED0;//2s闪烁 
+		}
 		times++;
-		
 	}
 	
 #endif

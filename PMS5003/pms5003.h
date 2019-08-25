@@ -11,7 +11,7 @@
 
 void pms5003_send_data(u8 *data, u8 dataNum);
 u8 pms5003_config(void);
-u8 pms5003_data_process(void);
+u8 pms5003_data_process(u8 mode);
 
 extern u16 PM25;
 

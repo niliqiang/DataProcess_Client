@@ -56,14 +56,14 @@ u8 pms5003_config()
 	}
 }
 
-u8 pms5003_data_process()
+u8 pms5003_data_process(u8 mode)
 {
 	u8 times;
 	UART4_RX_STA = 0;	//清空接收标志，准备接收数据
 	pms5003_send_data(passiveReadCode, 7);;	//发送PM2.5请求数据
 	while(1)
 	{
-		delay_ms(20); 
+		delay_ms(50); 
 		if(UART4_RX_STA == 32)	//接收到一次PMS5003返回数据
 		{
 			times = 0;			//清零计数
@@ -79,8 +79,16 @@ u8 pms5003_data_process()
 			}
 			else 
 			{
-				printf("PMS5003返回数据有误！1秒后重新发送请求...\r\n");
-				delay_ms(1000);
+				if(mode == 0)
+				{
+					printf("PMS5003返回数据有误！2秒后重新发送请求...\r\n");
+					delay_ms(1000);
+					delay_ms(1000);
+				}
+				else
+				{
+					printf("PMS5003返回数据有误！5秒后重新发送请求...\r\n");
+				}
 				return 1;
 			}
 		}
@@ -89,8 +97,16 @@ u8 pms5003_data_process()
 			times++;
 			if(times%20==0)
 			{
-				printf("PMS5003数据请求失败！1秒后重新发送请求...\r\n");
-				delay_ms(1000);
+				if(mode == 0)
+				{
+					printf("PMS5003返回数据有误！2秒后重新发送请求...\r\n");
+					delay_ms(1000);
+					delay_ms(1000);
+				}
+				else
+				{
+					printf("PMS5003返回数据有误！5秒后重新发送请求...\r\n");
+				}
 				return 1;
 			}
 		}

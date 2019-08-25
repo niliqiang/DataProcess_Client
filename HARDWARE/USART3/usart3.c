@@ -54,15 +54,11 @@ void USART3_Init(u32 bound)
 	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);     
 
 	// Enable the USART3     
-	USART_Cmd(USART3, ENABLE);   
-
-	//¥Æø⁄÷–∂œ≈‰÷√ 
-	//Configure the NVIC Preemption Priority Bits       
-	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);    
+	USART_Cmd(USART3, ENABLE);    
 
 	// Enable the USART3 Interrupt     
 	NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;    
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;    
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;    
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;    
 	NVIC_Init(&NVIC_InitStructure);
