@@ -24,7 +24,7 @@ int main(void)
 	u8 len;	 
 #endif
 	
-	u8 key, mode;
+	u8 keyManual, keyAuto, mode;
 	u16 times=0;
 	
 
@@ -43,40 +43,39 @@ int main(void)
 #if (!defined DEBUG_USART1_RXTX) && (!defined DEBUG_USART3_RXTX) && (!defined DEBUG_UART4_RXTX)
 
 	printf("\r\n开始配置PMS5003模块、4G模块、ESP8266模块...\r\n");
-	pms5003_config();
-	//wh_lte_7s4_config();
-	//atk_8266_config();
+	while(pms5003_config());
+	wh_lte_7s4_config();
+	atk_8266_config();
 	printf("PMS5003模块、4G模块、ESP8266模块配置完成！\r\n");
-	printf("按下KEY0进入手动模式；按下KEY1进入自动模式；按下WK_UP退出终端系统。\r\n");	
+	printf("【手动模式】\r\n当前为手动模式，按下KEY0获取数据；按下KEY1进入自动模式；按下WK_UP退出终端系统。\r\n");	
 	while(1)
 	{
 		delay_ms(10); 
-		key = KEY_Scan(0);
-		if(key == KEY0_PRES)
+		keyManual = KEY_Scan(0);
+		if(keyManual == KEY0_PRES)
 		{
-			printf("【手动模式】\r\n");
 			mode = 0;
 			//先测AQI
 			while(pms5003_data_process(mode));
-			//wh_lte_7s4_data_process();
-			//atk_8266_data_process(timestamp, PM25);
+			wh_lte_7s4_data_process();
+			atk_8266_data_process(timestamp, PM25);
 		}
-		if(key == KEY1_PRES)
+		if(keyManual == KEY1_PRES)
 		{
-			printf("【自动模式】时间间隔：5秒；按下WK_UP退出自动模式。\r\n");
+			printf("【自动模式】\r\n时间间隔：5秒；按下WK_UP退出自动模式。\r\n");
 			//打开中断
 			TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
 			TIM_Cmd(TIM3, ENABLE);  //使能TIMx外设
 			while(1)
 			{
 				delay_ms(10); 
-				key = KEY_Scan(0);
-				if(key == WKUP_PRES)
+				keyAuto = KEY_Scan(0);
+				if(keyAuto == WKUP_PRES)
 				{
 					//关闭中断
 					TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
-					TIM_Cmd(TIM3, DISABLE);  //使能TIMx外设
-					printf("自动模式退出成功。\r\n按下KEY0进入手动模式；按下KEY1进入自动模式；按下WK_UP退出终端系统。\r\n");
+					TIM_Cmd(TIM3, DISABLE);  //失能TIMx外设
+					printf("自动模式退出成功。\r\n【手动模式】\r\n当前为手动模式，按下KEY0获取数据；按下KEY1进入自动模式；按下WK_UP退出终端系统。\r\n");
 					break;
 				}
 				if((times%100)==0)
@@ -87,7 +86,7 @@ int main(void)
 				times++;	
 			}
 		}
-		if(key == WKUP_PRES)
+		if(keyManual == WKUP_PRES)
 		{
 			atk_8266_quit_trans();		//退出透传
 			atk_8266_send_cmd("AT+CIPMODE=0", "OK", 20);

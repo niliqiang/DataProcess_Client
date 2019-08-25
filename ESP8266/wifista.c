@@ -46,6 +46,7 @@ void atk_8266_wifista_config(void)
 		while(atk_8266_send_cmd(p,"OK",300))
 		{
 			printf("ESP8266连接TCP失败, IP:%s, Port:%s\r\n", ipbuf, (u8*)portnum);
+			delay_ms(1000);
 		}		
 		atk_8266_send_cmd("AT+CIPMODE=1","OK",200);      //传输模式为：透传
 	

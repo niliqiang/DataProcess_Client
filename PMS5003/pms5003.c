@@ -46,12 +46,14 @@ u8 pms5003_config()
 			{
 				if(UART4_RX_BUF[j] != PCReturn[j])
 				{
-					printf("PMS5003模块配置失败！\r\n");
-					return 0;
+					printf("PMS5003模块配置失败！2秒后重新配置...\r\n");
+					delay_ms(1000);
+					delay_ms(1000);
+					return 1;
 				}
 			}
 			printf("PMS5003模块配置成功！\r\n");
-			return 1;
+			return 0;
 		}
 	}
 }
